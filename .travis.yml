@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- stable
+- '6'
+after_success:
+- npm run coverage
+deploy:
+  provider: npm
+  email: "$NPM_EMAIL"
+  api_key:
+    secure: dCH+CXI6yjsHzxd1TA1Qc20jqNXSg7dFQft5xPny/qS8F+OjL/FY11OCcSZwir/Ndk+XyN2L4HCNOf4QYnqaJdUJMQskZYOVvyxTEARqQ3he5Bg9yLtTRye9KzYxhJuDlODR5ivr9QwVcIoOslU86rp4b09VdnBetkBnc5iVTuwPVZ8mtVFcaN6ikLNKTQbq7hs7igpZxwr/oWB/KF1jr2q5+50S6B9V1D4Oo9/s9zsI4LlO+79FibWZcOG2JVlOdbw77S+xScWa9lFflY0dF6iPVuKIafFvH4923rGHjJA/a1ef01QoqXTlSrBzlFTATyBETxSleiNKslf9GWzkqmEN1Szt21Tlj3wFzUd04SE+tsAbCxKUyQmlET4CG4GGvb9Cqbo4F9el1OIg4NUw2RuNPdLIYroLnHqym8+2JsQ8HBGLCAuPvnOwHUvQx2xhYSKX2LxdJvZCpdjJ3+ukXhEaRJBF6P8Jr8PRUUM+lQEmjTowSdjKNIeG08BcGO1TVClamiIv6bxJqcdAI/XPiGj/ix6/pSHQpcBKbYSmu01UuG86BZD5b/PflIeRxd+ak9xtxXfeoMZDJAR9tTdfa2fVasx280pbUrk7eAVQGGnyzLwR6m9fGNh8ux4Tztysyj4uR/+bMzGSkLQMB0Q0tyBxWim1/9t3sqsOPiA1rpY=
+  on:
+    tags: true
+    repo: up9cloud/node-cdkey
+    branch: master
+  skip_cleanup: true
