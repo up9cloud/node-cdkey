@@ -3,6 +3,12 @@
   "version": "2.0.1",
   "description": "Generate random strings by template.",
   "main": "src/index.js",
+  "files": [
+    "dist/*",
+    "lib/*",
+    "src/*",
+    "README.md"
+  ],
   "scripts": {
     "lint": "eslint src test",
     "cleanup": "rm -f dist/* lib/*",
