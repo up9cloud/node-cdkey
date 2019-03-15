@@ -1,6 +1,6 @@
 {
   "name": "cdkey",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Generate random strings by template.",
   "main": "src/index.js",
   "files": [
