@@ -4,13 +4,13 @@ import {
 
 function randomString (chars, length) {
   let str = ''
-  for (var i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     str += chars.charAt(Math.floor(Math.random() * chars.length))
   }
   return str
 }
 function randomChar (str) {
-  let index = random(0, str.length - 1)
+  const index = random(0, str.length - 1)
   return str[index]
 }
 function randomCharByTemplate (templateString, syntax) {
