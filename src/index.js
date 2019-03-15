@@ -1,27 +1,35 @@
-const _ = require('lodash')
+import {
+  isInteger,
+  isObject
+} from 'lodash-es'
 
-const syntax = require('./syntax.js')
-const Option = require('./Option.js')
-const Generator = require('./Generator.js')
+import defaultSyntax from './default-syntax.js'
+import FluentGenerator from './FluentGenerator.js'
+import {
+  DEFAULT
+} from './builtin-options.js'
+export * from './builtin-options.js'
 
-let self = function (arg1, arg2, arg3) {
+export function cdkey (arg1, arg2, arg3) {
   let options, amount, length, template, syntax
 
   if (arguments.length === 0) {
     // nothing.
   } else if (arg1 === true) {
-    return new Generator()
-  } else if (_.isInteger(arg1)) {
+    return new FluentGenerator()
+  } else if (isInteger(arg1)) {
     amount = arg1
     if (arg2) {
       length = arg2
     }
-  } else if (_.isObject(arg1)) {
-    options = _.clone(arg1)
+  } else if (isObject(arg1)) {
+    options = {
+      ...arg1
+    }
     if (arg2) {
       amount = arg2
       if (arg3) {
-        if (_.isInteger(arg3)) {
+        if (isInteger(arg3)) {
           length = arg3
         } else {
           template = arg3
@@ -31,21 +39,30 @@ let self = function (arg1, arg2, arg3) {
   } else {
     template = arg1
     if (arg2) {
-      if (_.isObject(arg2)) {
-        syntax = _.clone(arg2)
+      if (isObject(arg2)) {
+        syntax = {
+          ...arg2
+        }
         if (arg3) {
           amount = arg3
         }
       } else {
         amount = arg2
         if (arg3) {
-          syntax = _.clone(arg3)
+          syntax = {
+            ...arg3
+          }
         }
       }
     }
   }
   if (!options) {
-    options = Option.DEFAULT
+    options = {
+      ...DEFAULT,
+      syntax: {
+        ...DEFAULT.syntax
+      }
+    }
   }
   if (amount) {
     options.amount = amount
@@ -53,41 +70,32 @@ let self = function (arg1, arg2, arg3) {
   if (template) {
     options.length = null
     options.char = null
+
     options.template = template
     if (syntax) {
-      options.syntax = syntax
+      options.syntax = {
+        ...defaultSyntax,
+        ...syntax
+      }
     } else if (!options.syntax) {
-      options.syntax = Option.DEFAULT.syntax
+      options.syntax = {
+        ...DEFAULT.syntax
+      }
     }
   }
   if (length) {
     options.template = null
     options.syntax = null
+
     options.length = length
     if (!options.char) {
-      options.char = Option.DEFAULT.syntax['?']
+      options.char = DEFAULT.syntax['?']
     }
   }
-  let holder = new Generator(options)
-  if (self.debug) {
-    let r = holder.gen()
-    self.debug(r)
-    return r
-  } else {
-    return holder.gen()
-  }
+  let generator = new FluentGenerator(options)
+  return generator.gen()
 }
-self.syntax = () => syntax
-self.debug = false
+export function syntax () { return defaultSyntax }
+export function create (options) { return new FluentGenerator(options) }
 
-self.ALPHANUMERIC = Option.ALPHANUMERIC
-self.ALPHABETIC = Option.ALPHABETIC
-self.NUMERIC = Option.NUMERIC
-self.NUMBER = Option.NUMBER
-self.UPPER = Option.UPPER
-self.LOWER = Option.LOWER
-self.HEX = Option.HEX
-
-self.DIABLO = Option.DIABLO
-
-module.exports = self
+export default cdkey

@@ -2,9 +2,11 @@
   "name": "cdkey",
   "version": "1.0.9",
   "description": "Generate random strings by template.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "lint": "eslint src test",
+    "cleanup": "rm -f dist/* lib/*",
+    "build": "npm run cleanup && webpack --config build/webpack.config.js",
     "test": "npm run lint && nyc mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -31,17 +33,19 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^4.11.0",
+    "coveralls": "^2.13.3",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^2.4.5",
-    "nyc": "^10.3.2"
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "mocha": "^2.5.3",
+    "nyc": "^10.3.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "lodash": "^4.2.1"
+    "lodash-es": "^4.17.11"
   }
 }

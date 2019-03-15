@@ -1,12 +1,19 @@
 #!/usr/bin/env node
 const expect = require('chai').expect
-const cdkey = require('../index.js')
+const {
+  cdkey,
+  create,
+  NUMERIC,
+  NUMBER,
+  HEX,
+  LOWER,
+  UPPER,
+  ALPHABETIC,
+  ALPHANUMERIC,
+  DIABLO
+} = require('../lib/index.js')
 
-cdkey.debug = r => {
-  console.log(r)
-}
-
-describe('basic usage', () => {
+describe('Simple amount', () => {
   let length = 19
   let regex = /[^0-9a-zA-Z-]/g
   it('cdkey()', () => {
@@ -29,8 +36,8 @@ describe('basic usage', () => {
     })
   })
   it('cdkey(8, 2)', () => {
-    let length = 8
     let amount = 2
+    let length = 8
     let list = cdkey(amount, length)
     expect(list).to.be.a('array')
     expect(list.length).to.equal(amount)
@@ -43,7 +50,7 @@ describe('basic usage', () => {
   })
 })
 
-describe('basic template usage', () => {
+describe('Template', () => {
   let excludes = /[0O1Il]/g;
   [
     ['0000', /[^0-9]/g],
@@ -77,7 +84,7 @@ describe('basic template usage', () => {
   })
 })
 
-describe('basic template with custom syntax', () => {
+describe('Template with custom syntax', () => {
   let template = 'cccc'
   let regex = /[^ABC]/g
   let syntax = {
@@ -102,15 +109,15 @@ describe('basic template with custom syntax', () => {
   })
 })
 
-describe('build in options (char + length style)', () => {
+describe('builtin options (char + length)', () => {
   [
-    ['cdkey.ALPHANUMERIC', cdkey.ALPHANUMERIC, /[^0-9A-Za-z]/g],
-    ['cdkey.ALPHABETIC', cdkey.ALPHABETIC, /[^A-Za-z]/g],
-    ['cdkey.NUMERIC', cdkey.NUMERIC, /[^0-9]/g],
-    ['cdkey.NUMBER', cdkey.NUMBER, /[^0-9]/g],
-    ['cdkey.UPPER', cdkey.UPPER, /[^A-Z]/g],
-    ['cdkey.LOWER', cdkey.LOWER, /[^a-z]/g],
-    ['cdkey.HEX', cdkey.HEX, /[^0-9ABCDEF]/g]
+    ['NUMERIC', NUMERIC, /[^0-9]/g],
+    ['NUMBER', NUMBER, /[^0-9]/g],
+    ['HEX', HEX, /[^0-9ABCDEF]/g],
+    ['LOWER', LOWER, /[^a-z]/g],
+    ['UPPER', UPPER, /[^A-Z]/g],
+    ['ALPHABETIC', ALPHABETIC, /[^A-Za-z]/g],
+    ['ALPHANUMERIC', ALPHANUMERIC, /[^0-9A-Za-z]/g]
   ].forEach((row) => {
     let name = row[0]
     let option = row[1]
@@ -158,7 +165,7 @@ describe('build in options (char + length style)', () => {
 
 describe('build in options (template + syntax style)', () => {
   [
-    ['cdkey.DIABLO', cdkey.DIABLO, /[^0-9A-Za-z-]/g]
+    ['DIABLO', DIABLO, /[^0-9A-Za-z-]/g]
   ].forEach((row) => {
     let name = row[0]
     let option = row[1]
@@ -195,8 +202,17 @@ describe('fluent mode methods', () => {
   let char = 'ABC'
   let length = 8
   let regex = /[^ABC]/g
-  it('method generate is same as gen.', () => {
+  it('cdkey(true) should work', () => {
     let str = cdkey(true)
+      .length(length)
+      .char(char)
+      .generate()
+    expect(str).to.be.a('string')
+    expect(str.length).to.equal(length)
+    expect(str.search(regex)).to.equal(-1)
+  })
+  it('the generate method should work same as gen.', () => {
+    let str = create()
       .length(length)
       .char(char)
       .generate()
@@ -206,12 +222,12 @@ describe('fluent mode methods', () => {
   })
 })
 
-describe('fluent mode (char + length style)', () => {
+describe('fluent mode (char + length)', () => {
   let char = 'ABC'
   let length = 8
   let regex = /[^ABC]/g
   it('generate one by ' + char + ' length ' + length, () => {
-    let str = cdkey(true)
+    let str = create()
       .length(length)
       .char(char)
       .gen()
@@ -221,7 +237,7 @@ describe('fluent mode (char + length style)', () => {
   })
   it('generate multi by ' + char + ' length ' + length, () => {
     let amount = 2
-    let list = cdkey(true)
+    let list = create()
       .length(length)
       .char(char)
       .amount(amount)
@@ -236,14 +252,14 @@ describe('fluent mode (char + length style)', () => {
   })
 })
 
-describe('fluent mode (template + syntax style)', () => {
+describe('fluent mode (template + syntax)', () => {
   let template = '????'
   let regex = /[^ABC]/g
   let syntax = {
     '?': 'ABC'
   }
   it('generate one by ' + template + ' syntax ' + JSON.stringify(syntax), () => {
-    let str = cdkey(true)
+    let str = create()
       .template(template)
       .syntax(syntax)
       .gen()
@@ -253,7 +269,7 @@ describe('fluent mode (template + syntax style)', () => {
   })
   it('generate multi by ' + template + ' syntax ' + JSON.stringify(syntax), () => {
     let amount = 2
-    let list = cdkey(true)
+    let list = create()
       .template(template)
       .syntax(syntax)
       .amount(amount)

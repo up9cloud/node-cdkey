@@ -3,67 +3,82 @@
 [![Build Status](https://travis-ci.org/up9cloud/node-cdkey.svg?branch=master)](https://travis-ci.org/up9cloud/node-cdkey)
 [![Coverage Status](https://coveralls.io/repos/github/up9cloud/node-cdkey/badge.svg?branch=master)](https://coveralls.io/github/up9cloud/node-cdkey?branch=master)
 
-generate the random string by template.
+Generate the random string by template.
 
 ## Installation
 
 ```sh
-npm install cdkey --save
-
-# node <= v4
-npm install cdkey@1.0.6
+npm i cdkey
 ```
 
-## Usage (basic)
+## Basic Usage
+
+> Browser
+
+```html
+<script src="https://unpkg.com/cdkey/dist/cdkey.min.js"></script>
+<script>
+  console.log(cdkey.default()) // eC8q-8ERg-fTZa-Vh2o
+</script>
+```
+
+> Node.js
 
 ```js
-cdkey([number amount])
+import cdkey from 'cdkey' // esm
+
+const cdkey = require('cdkey/lib').default // cjs
+
+console.log(cdkey()) // eC8q-8ERg-fTZa-Vh2o
+```
+
+## Advenced Usage
+
+### Simple amount
+
+```js
+cdkey([Number amount])
 ```
 
 ```js
-const cdkey = require("cdkey")
-
 cdkey() // eC8q-8ERg-fTZa-Vh2o
 cdkey(2) // [ 'kcsi-V5xR-1xv8-zq7q', 'cumh-jYVn-5vL9-mwLM' ]
 ```
 
-## Usage (template)
+### Template
 
 ```js
-cdkey(string template, [number amount], [object syntax])
+cdkey(String template, [Number amount], [Object syntax])
 ```
 
-###### default syntax
+| syntax char | chars for random      | exclude non-readable chars |
+| ----------- | --------------------- | -------------------------- |
+| `0`         | [0-9]                 | [01]                       |
+| `A`         | [A-Z]                 | [OI]                       |
+| `a`         | [a-z]                 | [l]                        |
+| `X`         | [0-9] + [A-Z]         | [01OI]                     |
+| `x`         | [0-9] + [a-z]         | [01l]                      |
+| `?`         | [0-9] + [A-Z] + [a-z] | [01OIl]                    |
 
-exclude non-readable chars
-
-|syntax|basic chars|exclude chars|
-|---|---|---|
-|`0`|[0-9]|[01]|
-|`A`|[A-Z]|[OI]|
-|`a`|[a-z]|[l]|
-|`X`|[0-9] + [A-Z]|[01OI]|
-|`x`|[0-9] + [a-z]|[01l]|
-|`?`|[0-9] + [A-Z] + [a-z]|[01OIl]|
+```js
+import { syntax } from 'cdkey'
+syntax() // To get default syntax object.
+// {
+//   '0': '23456789',
+//   'A': 'ABCDEFGHJKLMNPQRSTUVWXYZ',
+//   'a': 'abcdefghijkmnopqrstuvwxyz',
+//   'X': '23456789ABCDEFGHJKLMNPQRSTUVWXYZ',
+//   'x': '23456789abcdefghijkmnopqrstuvwxyz',
+//   '?': '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+// }
+```
 
 ```js
 cdkey('XXXX') // 7F3K
 cdkey('????', 2) // [ 'cUwc', 'n9zu' ]
 
-cdkey.syntax() // to get default syntax data.
-// { '0': '23456789',
-//   A: 'ABCDEFGHJKLMNPQRSTUVWXYZ',
-//   a: 'abcdefghijkmnopqrstuvwxyz',
-//   X: '23456789ABCDEFGHJKLMNPQRSTUVWXYZ',
-//   x: '23456789abcdefghijkmnopqrstuvwxyz',
-//   '?': '23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz' }
-```
-
-###### custom syntax
-
-```js
 cdkey('AAAA', {
-  A: 'AB'
+  A: 'AB' // customize syntax A
 })
 // ABBA
 
@@ -73,27 +88,24 @@ cdkey('cccc', 2, {
 // [ 'BCAA', 'ACAB' ]
 ```
 
-## Usage (option)
+### Options
 
 ```js
-cdkey(object options, [number amount, [string template|number length]])
+cdkey(Object options, [Number amount, [String template | Number length]])
 ```
 
-amount will override options.amount.
+- amount would override options.amount
+- the 3rd argument would override options.template or options.length, depand on style.
 
-the 3rd argument will override template or length (depand on style).
+| attribute        | type   | description |
+| ---------------- | ------ | ----------- |
+| options.char     | string |             |
+| options.length   | number |             |
+| options.template | string |             |
+| options.syntax   | object |             |
+| options.amount   | number | default 1   |
 
-###### options
-
-|attribute|type|description|
-|---|---|---|
-|char|string||
-|length|number||
-|template|string||
-|syntax|object||
-|amount|number|default 1|
-
-###### char + length style (custom)
+> char + length (custom)
 
 ```js
 cdkey({
@@ -110,7 +122,7 @@ cdkey({
 // aca
 ```
 
-###### template + syntax (custom)
+> template + syntax (custom)
 
 ```js
 cdkey({
@@ -132,56 +144,59 @@ cdkey({
 // [ "1220", "2001" ]
 ```
 
-###### char + length style (buildin)
+> char + length (builtin options)
 
-> default length is 32
-
-- `ALPHANUMERIC` - [0-9 a-z A-Z]
-- `ALPHABETIC` - [a-z A-Z]
-- `NUMBER`, `NUMERIC` - [0-9]
-- `UPPER` - [A-Z]
-- `LOWER` - [a-z]
-- `HEX` - [0-9 A-F]
+| key                 | char          | length |
+| ------------------- | ------------- | ------ |
+| `ALPHANUMERIC`      | [0-9 a-z A-Z] | 32     |
+| `ALPHABETIC`        | [a-z A-Z]     | 32     |
+| `NUMBER`, `NUMERIC` | [0-9]         | 32     |
+| `UPPER`             | [A-Z]         | 32     |
+| `LOWER`             | [a-z]         | 32     |
+| `HEX`               | [0-9 A-F]     | 32     |
 
 ```js
-cdkey(cdkey.NUMBER) // 22030189956236488846744098007707
-cdkey(cdkey.NUMBER, 2, 8) // [ '05250373', '42852368' ]
+import { NUMBER } from 'cdkey'
+
+cdkey(NUMBER) // 22030189956236488846744098007707
+cdkey(NUMBER, 2, 8) // [ '05250373', '42852368' ]
 ```
 
-###### template + syntax style (buildin)
+> template + syntax (builtin options)
 
-- `DEFAULT` - '????-????-????-????'
-- `DIABLO` - 'XXXX-XXXX-XXXX-XXXX'
+| key       | template              |
+| --------- | --------------------- |
+| `DEFAULT` | '????-????-????-????' |
+| `DIABLO`  | 'XXXX-XXXX-XXXX-XXXX' |
 
 ```js
-cdkey(cdkey.DIABLO, 2) // [ '2F2L-HJTG-P4L6-QBTZ', 'F1XM-K9JZ-ED9L-EPL9' ]
+import { DIABLO } from 'cdkey'
+
+cdkey(DIABLO, 2) // [ '2F2L-HJTG-P4L6-QBTZ', 'F1XM-K9JZ-ED9L-EPL9' ]
 ```
 
-## Usage (fluent)
+### Fluent
 
 ```js
-cdkey(true)
-    [.method(...)]
-    ...
-    .gen()
+import { create } from 'cdkey'
+
+create()
+  .char(String chars)
+  .length(Number length)
+  .template(String template)
+  .syntax(Object syntax)
+  .amount(Number amount)
+  .gen()
 ```
 
-|method|param type|
-|---|---|
-|char|string|
-|length|number|
-|template|string|
-|syntax|object|
-|amount|number|
-
 ```js
-cdkey(true)
+create()
   .char('012')
   .length(8)
   .gen()
 // 01201002
 
-cdkey(true)
+create()
   .template('AAAA')
   .syntax({
     A: 'ABC'
@@ -195,7 +210,7 @@ cdkey(true)
 
 - escape string in template.
 - command line support.
-- browser support.
+- ~~browser support.~~
 
 ## License
 
