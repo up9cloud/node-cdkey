@@ -56,7 +56,7 @@ jobs:
             npm install mocha@6
             npm install chai@4
           fi
-          if [ "${{ matrix.node-version }}" -ge 14 ]; then
+          if [ "${{ matrix.node-version }}" -ge 16 ]; then
             cat package.json
           fi
           npx mocha
