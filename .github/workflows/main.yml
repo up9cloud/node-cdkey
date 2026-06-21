@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8, 10, 12, 14, 16, 18, 20, 22, 24]
+        node-version: [24, 22, 20, 18, 16, 14, 12, 10, 8]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4

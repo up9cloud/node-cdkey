@@ -1,13 +1,12 @@
-import {
-  isInteger,
-  isObject
-} from 'lodash-es'
-
 import defaultSyntax from './default-syntax.js'
 import FluentGenerator from './FluentGenerator.js'
 import {
   DEFAULT
 } from './builtin-options.js'
+import {
+  isInteger,
+  isObject,
+} from './utils.js'
 export * from './builtin-options.js'
 
 export function cdkey (arg1, arg2, arg3) {
