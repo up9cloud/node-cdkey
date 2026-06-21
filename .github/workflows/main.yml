@@ -46,20 +46,20 @@ jobs:
           if [ "${{ matrix.node-version }}" -ge 20 ]; then
             npm install mocha
             npm install chai
-            cat package.json
           elif [ "${{ matrix.node-version }}" -ge 18 ]; then
             npm install mocha
             npm install chai@4
-            cat package.json
           elif [ "${{ matrix.node-version }}" -ge 12 ]; then
             npm install mocha@9
             npm install chai@4
-            cat package.json
           else
             npm install mocha@6
             npm install chai@4
           fi
-      - run: npx mocha
+          if [ "${{ matrix.node-version }}" -ge 14 ]; then
+            cat package.json
+          fi
+          npx mocha
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.repository == 'up9cloud/node-cdkey'
     runs-on: ubuntu-latest
