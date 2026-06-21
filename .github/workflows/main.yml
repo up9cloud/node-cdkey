@@ -46,7 +46,7 @@ jobs:
           if [ "${{ matrix.node-version }}" -ge 20 ]; then
             npm install mocha
             npm install chai
-          if [ "${{ matrix.node-version }}" -ge 18 ]; then
+          elif [ "${{ matrix.node-version }}" -ge 18 ]; then
             npm install mocha
             npm install chai@4
           elif [ "${{ matrix.node-version }}" -ge 12 ]; then
