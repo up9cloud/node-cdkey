@@ -43,7 +43,20 @@ jobs:
           ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       - run: |
           rm -f package.json package-lock.json
-          npm install chai mocha
+          if [ "${{ matrix.node-version }}" -ge 20 ]; then
+            npm install mocha
+            npm install chai
+          if [ "${{ matrix.node-version }}" -ge 18 ]; then
+            npm install mocha
+            npm install chai@4
+          elif [ "${{ matrix.node-version }}" -ge 12 ]; then
+            npm install mocha@9
+            npm install chai@4
+          else
+            npm install mocha@6
+            npm install chai@4
+          fi
+          cat package.json
       - run: npx mocha
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.repository == 'up9cloud/node-cdkey'
