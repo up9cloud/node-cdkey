@@ -220,6 +220,11 @@ syntax() // To get default syntax object.
 - Create a git tag in the format vx.x.x for the new version (`git tag vx.x.x`)
 - Push with the tag to GitHub to trigger an automatic release (`git push && git push --tags`)
 
+### Remove version tag
+
+- remove remote tag: `git push origin -d vx.x.x`
+- remove local tag: `git tag -d vx.x.x`
+
 ## TODO
 
 - [ ] escape string in template.
