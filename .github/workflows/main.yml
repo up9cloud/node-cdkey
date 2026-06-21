@@ -41,8 +41,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
         env:
           ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-      - run: npm ci
-      - run: npm test
+      - run: |
+          rm -f package.json package-lock.json
+          npm install chai mocha
+      - run: npx mocha
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.repository == 'up9cloud/node-cdkey'
     runs-on: ubuntu-latest
