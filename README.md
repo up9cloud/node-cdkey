@@ -1,7 +1,7 @@
 # node-cdkey
 
-[![Build Status](https://travis-ci.org/up9cloud/node-cdkey.svg?branch=master)](https://travis-ci.org/up9cloud/node-cdkey)
-[![Coverage Status](https://coveralls.io/repos/github/up9cloud/node-cdkey/badge.svg?branch=master)](https://coveralls.io/github/up9cloud/node-cdkey?branch=master)
+<!-- [![Build Status](https://travis-ci.org/up9cloud/node-cdkey.svg?branch=master)](https://travis-ci.org/up9cloud/node-cdkey) -->
+<!-- [![Coverage Status](https://coveralls.io/repos/github/up9cloud/node-cdkey/badge.svg?branch=master)](https://coveralls.io/github/up9cloud/node-cdkey?branch=master) -->
 
 Generate random string by template.
 

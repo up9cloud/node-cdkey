@@ -13,8 +13,7 @@
     "lint": "eslint src test",
     "clean": "rm -f dist/* lib/*",
     "build": "npm run clean && webpack --config build/webpack.config.js",
-    "test": "npm run lint && nyc mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "npm run lint && nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -37,7 +36,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "chai": "^6.2.2",
-    "coveralls": "^3.0.3",
     "eslint": "^10.5.0",
     "eslint-plugin-chai-friendly": "^1.2.1",
     "eslint-plugin-mocha": "^11.3.0",
