@@ -12,7 +12,7 @@ jobs:
       build_path: ${{ steps.build-artifacts.outputs.paths }}
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
       - run: npm ci
@@ -36,7 +36,7 @@ jobs:
         with:
           name: build-artifacts
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
         env:
@@ -60,6 +60,8 @@ jobs:
             cat package.json
           fi
           npx mocha
+  # https://docs.github.com/en/actions/tutorials/publish-packages/publish-nodejs-packages#publishing-packages-to-the-npm-registry
+  # https://docs.npmjs.com/trusted-publishers#github-actions-configuration
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && github.repository == 'up9cloud/node-cdkey'
     runs-on: ubuntu-latest
@@ -72,10 +74,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          package-manager-cache: false
+      - run: npm publish
