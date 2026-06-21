@@ -19,6 +19,10 @@ npm i cdkey
 <script src="https://unpkg.com/cdkey/dist/cdkey.min.js"></script>
 <script>
   console.log(cdkey.default()) // eC8q-8ERg-fTZa-Vh2o
+  console.log(cdkey.create()
+  .char('012')
+  .length(3)
+  .gen()) // 202
 </script>
 ```
 
@@ -32,7 +36,7 @@ const cdkey = require('cdkey/lib').default // cjs
 console.log(cdkey()) // eC8q-8ERg-fTZa-Vh2o
 ```
 
-## Advenced Usage
+## Advanced Usage
 
 ### Simple amount
 
@@ -207,11 +211,19 @@ syntax() // To get default syntax object.
 // }
 ```
 
+## Dev memo
+
+### Bump the version
+
+- Increment .version in the `package.json` file
+- Commit changes
+- Create a git tag in the format vx.x.x for the new version (`git tag vx.x.x`)
+- Push with the tag to GitHub to trigger an automatic release (`git push && git push --tags`)
+
 ## TODO
 
-- escape string in template.
-- command line support.
-- ~~browser support.~~
+- [ ] escape string in template.
+- [ ] command line support.
 
 ## License
 

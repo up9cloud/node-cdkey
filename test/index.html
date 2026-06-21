@@ -1,4 +1,46 @@
 <script src="../dist/cdkey.min.js"></script>
 <script>
-  console.log(cdkey.default())
+document.addEventListener('DOMContentLoaded', function() {
+  const examples = [
+    {
+      command: "cdkey.default()",
+      result: cdkey.default()
+    },
+    {
+      command: `cdkey.create()
+.char('012')
+.length(3)
+.gen()`,
+      result: cdkey.create().char('012').length(3).gen()
+    }
+  ]
+  function outputToConsole(example) {
+    console.log(`${example.command} =`, example.result)
+  }
+  function outputToTable(table, example) {
+    const row = table.insertRow()
+    ;[example.command, example.result].forEach(cellVal => {
+      const cell = row.insertCell()
+      cell.innerHTML = `<pre><code>${cellVal}</code></pre>`
+      cell.style.border = "1px solid #aaa"
+      cell.style.padding = "1em"
+    })
+  }
+  const table = document.createElement('table')
+  table.style.borderCollapse = 'collapse'
+  const header = table.insertRow()
+  ;['Command', 'Result'].forEach(text => {
+    const th = document.createElement('th')
+    th.textContent = text
+    th.style.border = "1px solid #aaa"
+    th.style.padding = "1em"
+    th.style.background = "#eee"
+    header.appendChild(th)
+  })
+  examples.forEach(example => {
+    outputToConsole(example)
+    outputToTable(table, example)
+  })
+  document.body.appendChild(table)
+})
 </script>
